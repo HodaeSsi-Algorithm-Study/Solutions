@@ -10,11 +10,15 @@ class TreeNode:
 
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        max_node = -1001
 
         def solve(node: Optional[TreeNode]) -> Tuple[int, int, int]:
             # 날 포함해 양쪽을 연결한 최대값, 날 포함해 한 쪽만 연결한 최대값, 날 포함하지 않을 때의 최대값
             if node is None:
                 return (0, 0, 0)
+
+            nonlocal max_node
+            max_node = max(max_node, node.val)
 
             left = solve(node.left)
             right = solve(node.right)
@@ -25,4 +29,5 @@ class Solution:
                 max(*left, *right)
             )
 
-        return max(solve(root))
+        ret = max(solve(root))
+        return ret if max_node >= 0 else max_node
